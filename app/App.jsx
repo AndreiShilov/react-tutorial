@@ -16,22 +16,26 @@ class App extends Component {
     }
 
     componentWillMount() {
-        console.log('mounting');
+        this.setState({
+            m: 2
+        })
     }
 
     componentDidMount() {
-        console.log('mounted');
+        // console.log(ReactDom.findDOMNode(this));
+        this.inc = setInterval(this.update, 500);
     }
 
     componentWillUnmount() {
-        console.log('unmount');
+        // console.log('unmount');
+        clearInterval(this.inc);
     }
 
     render() {
         console.log('rendering');
         return (
             <div>
-                val : {this.state.val}
+                val : {this.state.val * this.state.m}
                 <br/>
                 <button onClick={this.update}>Increase</button>
             </div>
