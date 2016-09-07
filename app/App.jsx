@@ -3,32 +3,31 @@ import ReactDom from 'react-dom';
 
 
 class App extends Component {
+    constructor(){
+        super();
+        this.state = {
+            text: 'this is the state'
+        }
+    }
+
+    update(e){
+        this.setState({
+            text: e.target.value
+        })
+    }
+
     render() {
-        const text = this.props.text;
-        const cat = this.props.cat;
         return <div>
             <h1>Hello world</h1>
-            <div>{text}</div>
-            <div>{cat}</div>
+            <input type="text" onChange={this.update.bind(this)}/>
+            <div>{this.state.text}</div>
         </div>
     }
 }
 
-App.propTypes = {
-    text: PropTypes.string.isRequired,
-    cat: PropTypes.number
-};
-
-App.defaultProps = {
-    cat: 10
-};
-// const App = () => <h1>Hello from const</h1>
-
-export default App
-
 
 ReactDom.render(
-    <App text="Passed text 2"/>,
+    <App />,
     document.getElementById('app')
 );
 
