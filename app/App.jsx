@@ -3,24 +3,67 @@ import ReactDom from 'react-dom';
 
 
 class App extends Component {
-    render(){
-        return <Button>I <Heart/></Button>
+    constructor() {
+        super();
+        this.state = {val: 0};
+        this.update = this.update.bind(this);
     }
-};
 
-class Button extends Component{
-    render(){
-        return <button>{this.props.children}</button>
+    update() {
+        this.setState({
+            val: this.state.val + 1
+        })
+    }
+
+    componentWillMount() {
+        console.log('mounting');
+    }
+
+    componentDidMount() {
+        console.log('mounted');
+    }
+
+    componentWillUnmount() {
+        console.log('unmount');
+    }
+
+    render() {
+        console.log('rendering');
+        return (
+            <div>
+                val : {this.state.val}
+                <br/>
+                <button onClick={this.update}>Increase</button>
+            </div>
+        )
     }
 }
+;
 
 
-const Heart = (props) => {
-    return <span>love</span>
+class Wrapper extends Component {
+
+    mount() {
+        ReactDom.render(<App/>, document.getElementById('a'))
+    }
+
+    unmount() {
+        ReactDom.unmountComponentAtNode(document.getElementById('a'))
+    }
+
+    render() {
+        return (
+            <div className="">
+                <button onClick={this.mount.bind(this)}>Mount</button>
+                <button onClick={this.unmount.bind(this)}>Unmount</button>
+                <div id="a"></div>
+            </div>
+        )
+    }
 }
 
 ReactDom.render(
-    <App />,
+    <Wrapper />,
     document.getElementById('app')
 );
 
