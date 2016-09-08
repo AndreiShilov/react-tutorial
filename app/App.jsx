@@ -5,69 +5,45 @@ import ReactDom from 'react-dom';
 class App extends Component {
     constructor() {
         super();
-        this.state = {val: 0};
         this.update = this.update.bind(this);
+        this.state = {increasing: false}
     }
 
     update() {
+        ReactDom.render(<App val={this.props.val + 1}/>, document.getElementById('app'))
+    }
+
+    componentWillReceiveProps(nextProps) {
         this.setState({
-            val: this.state.val + 1
+            increasing: nextProps.val > this.props.val
         })
     }
 
-    componentWillMount() {
-        this.setState({
-            m: 2
-        })
-    }
-
-    componentDidMount() {
-        // console.log(ReactDom.findDOMNode(this));
-        this.inc = setInterval(this.update, 500);
-    }
-
-    componentWillUnmount() {
-        // console.log('unmount');
-        clearInterval(this.inc);
+    shouldComponentUpdate (nextProps, nextState){
+        return nextProps.val % 5 == 0;
     }
 
     render() {
-        console.log('rendering');
+        console.log(this.state.increasing);
         return (
             <div>
-                val : {this.state.val * this.state.m}
-                <br/>
-                <button onClick={this.update}>Increase</button>
+                <button onClick={this.update}>{this.props.val}</button>
             </div>
         )
     }
-}
-;
 
-
-class Wrapper extends Component {
-
-    mount() {
-        ReactDom.render(<App/>, document.getElementById('a'))
-    }
-
-    unmount() {
-        ReactDom.unmountComponentAtNode(document.getElementById('a'))
-    }
-
-    render() {
-        return (
-            <div className="">
-                <button onClick={this.mount.bind(this)}>Mount</button>
-                <button onClick={this.unmount.bind(this)}>Unmount</button>
-                <div id="a"></div>
-            </div>
-        )
+    componentDidUpdate (prepProps, prevState){
+        console.log(prepProps)
     }
 }
+
+
+App.defaultProps = {
+    val: 0
+};
 
 ReactDom.render(
-    <Wrapper />,
+    <App />,
     document.getElementById('app')
 );
 
